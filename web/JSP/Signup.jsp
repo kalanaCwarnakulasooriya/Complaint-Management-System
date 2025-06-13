@@ -25,7 +25,7 @@
         </div>
 
         <div class="signup-form">
-            <form id="signupForm" action="signup" method="post">
+            <form id="signupForm" action="${pageContext.request.contextPath}/signup" method="post" onsubmit="return validateSignupForm();">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
