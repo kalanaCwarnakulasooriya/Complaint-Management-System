@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.Dao.UserDAO;
 import lk.ijse.Model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Collect and combine names
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String name = (firstName + " " + lastName).trim();
@@ -24,12 +26,15 @@ public class SignupServlet extends HttpServlet {
         String mobile = req.getParameter("mobile");
         String email = req.getParameter("email");
         String username = req.getParameter("username");
-        String password = req.getParameter("password");
+        String rawPassword = req.getParameter("password"); // raw password from form
         String department = req.getParameter("department");
         String jobRole = req.getParameter("jobRole");
 
+        String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+
         ServletContext context = req.getServletContext();
         BasicDataSource dataSource = (BasicDataSource) context.getAttribute("dbcpDataSource");
+
         UserDAO userDAO = new UserDAO(dataSource);
 
         try {
@@ -39,14 +44,14 @@ public class SignupServlet extends HttpServlet {
             user.setMobile(mobile);
             user.setEmail(email);
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(hashedPassword);
             user.setDepartment(department);
             user.setJobRole(jobRole);
 
             if (userDAO.saveUser(user)) {
-                resp.sendRedirect("JSP/login.jsp?signup-msg=Account+created");
+                resp.sendRedirect("web/JSP/login.jsp?signup-msg=Account+created");
             } else {
-                resp.sendRedirect("JSP/Signup.jsp?signup-msg=Could+not+create+user");
+                resp.sendRedirect("web/JSP/Signup.jsp?signup-msg=Could+not+create+user");
             }
         } catch (Exception e) {
             e.printStackTrace();

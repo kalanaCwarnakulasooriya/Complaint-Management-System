@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lk.ijse.Dao.UserDAO;
 import lk.ijse.Model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -30,13 +31,13 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
             if (user.getJobRole().equals("admin")) {
-                resp.sendRedirect("JSP/admin-dashboard.jsp");
+                resp.sendRedirect("web/JSP/admin-dashboard.jsp");
             } else {
-                resp.sendRedirect("JSP/employee-dashboard.jsp");
+                resp.sendRedirect("web/JSP/employee-dashboard.jsp");
             }
         } else {
             req.setAttribute("error", "Invalid username or password.");
-            req.getRequestDispatcher("JSP/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("web/JSP/login.jsp").forward(req, resp);
         }
     }
 }
