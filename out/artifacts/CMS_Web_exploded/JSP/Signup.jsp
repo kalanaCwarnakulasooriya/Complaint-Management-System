@@ -25,7 +25,7 @@
         </div>
 
         <div class="signup-form">
-            <form id="signupForm" action="signup" method="post">
+            <form id="signupForm" action="${pageContext.request.contextPath}/signup" method="post" onsubmit="return validateSignupForm();">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
@@ -121,6 +121,30 @@
                 </div>
 
                 <button id="btn-signup" type="submit">Create Account</button>
+
+                <%
+                    String signupError = request.getParameter("signup-msg");
+                    if (signupError != null && !signupError.isEmpty()) {
+
+                        String icon = "error"; // default
+
+                        if (signupError.toLowerCase().contains("account created")) {
+                            icon = "success";
+                        } else if (signupError.toLowerCase().contains("could not create user")) {
+                            icon = "error";
+                        }
+                %>
+                <script>
+                    Swal.fire({
+                        position: "center",
+                        icon: "<%= icon %>",
+                        title: "<%= signupError.replace("+", " ") %>",
+                        showConfirmButton: true
+                    });
+                </script>
+                <%
+                    }
+                %>
 
                 <div class="error" id="error-message">
                     Passwords do not match. Please try again.
