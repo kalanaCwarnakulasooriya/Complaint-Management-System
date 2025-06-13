@@ -5,6 +5,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
@@ -37,5 +38,35 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public User validateLogin(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement pstm = connection.prepareStatement(sql)) {
+
+            pstm.setString(1, username);
+            pstm.setString(2, password);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUserId(String.valueOf(rs.getInt("user_id")));
+                    user.setName(rs.getString("name"));
+                    user.setAddress(rs.getString("address"));
+                    user.setMobile(rs.getString("mobile"));
+                    user.setEmail(rs.getString("email"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setDepartment(rs.getString("department"));
+                    user.setJobRole(rs.getString("job_role"));
+                    return user;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
