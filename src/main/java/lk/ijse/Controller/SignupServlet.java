@@ -20,7 +20,6 @@ public class SignupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
-
         String name = (firstName + " " + lastName).trim();
 
         String address = req.getParameter("address");
@@ -32,12 +31,12 @@ public class SignupServlet extends HttpServlet {
         String department = req.getParameter("department");
         String jobRole = req.getParameter("jobRole");
 
-        String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
-
         if (!rawPassword.equals(confirmPassword)) {
-            resp.sendRedirect("web/JSP/Signup.jsp?signup-msg=Passwords+do+not+match");
+            resp.sendRedirect(req.getContextPath() + "/web/JSP/Signup.jsp?signup-msg=Passwords+do+not+match");
             return;
         }
+
+        String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
 
         ServletContext context = req.getServletContext();
         BasicDataSource dataSource = (BasicDataSource) context.getAttribute("dbcpDataSource");
@@ -56,18 +55,18 @@ public class SignupServlet extends HttpServlet {
             user.setJobRole(jobRole);
 
             if (userDAO.isUsernameTaken(username)) {
-                resp.sendRedirect(req.getContextPath() + "web/JSP/Signup.jsp?signup-msg=Username+already+taken");
+                resp.sendRedirect(req.getContextPath() + "/web/JSP/Signup.jsp?signup-msg=Username+already+taken");
                 return;
             }
 
             if (userDAO.saveUser(user)) {
-                resp.sendRedirect(req.getContextPath() + "web/JSP/login.jsp?signup-msg=Account+created");
+                resp.sendRedirect(req.getContextPath() + "/web/JSP/login.jsp?signup-msg=Account+created");
             } else {
-                resp.sendRedirect(req.getContextPath() + "web/JSP/Signup.jsp?signup-msg=Could+not+create+user");
+                resp.sendRedirect(req.getContextPath() + "/web/JSP/Signup.jsp?signup-msg=Could+not+create+user");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect("JSP/Signup.jsp?signup-msg=Server+error");
+            resp.sendRedirect(req.getContextPath() + "/web/JSP/Signup.jsp?signup-msg=Server+error");
         }
     }
 
@@ -76,9 +75,10 @@ public class SignupServlet extends HttpServlet {
         ServletContext context = getServletContext();
         BasicDataSource dataSource = (BasicDataSource) context.getAttribute("dbcpDataSource");
         UserDAO userDAO = new UserDAO(dataSource);
+
         List<String> usernames = userDAO.getAllUsernames();
 
-        req.setAttribute("usernames", usernames);
-        req.getRequestDispatcher("web/JSP/Signup.jsp").forward(req, resp);
+        req.setAttribute("existingUsernames", usernames);
+        req.getRequestDispatcher("/web/JSP/Signup.jsp").forward(req, resp);
     }
 }

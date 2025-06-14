@@ -46,20 +46,26 @@
     </div>
 
     <%
-        String signupMsg = request.getParameter("signup-msg");
-        if (signupMsg != null && !signupMsg.isEmpty()) {
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
     %>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: '<%= signupMsg.replace("+", " ") %>',
-            confirmButtonColor: '#3085d6'
+            icon: 'error',
+            title: 'Login Failed',
+            text: '<%= error %>',
+            confirmButtonColor: '#d33'
         });
     </script>
     <%
         }
     %>
+
+    <% String signupStatus = request.getParameter("signup"); %>
+    <script>
+        <% if ("success".equals(signupStatus)) { %>
+        Swal.fire("Account Created!", "You can now log in.", "success");
+        <% } %>
+    </script>
 </body>
 </html>
