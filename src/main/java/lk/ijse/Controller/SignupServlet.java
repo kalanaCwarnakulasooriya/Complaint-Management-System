@@ -12,25 +12,32 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Collect and combine names
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
+
         String name = (firstName + " " + lastName).trim();
 
         String address = req.getParameter("address");
         String mobile = req.getParameter("mobile");
         String email = req.getParameter("email");
         String username = req.getParameter("username");
-        String rawPassword = req.getParameter("password"); // raw password from form
+        String rawPassword = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
         String department = req.getParameter("department");
         String jobRole = req.getParameter("jobRole");
 
         String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+
+        if (!rawPassword.equals(confirmPassword)) {
+            resp.sendRedirect("web/JSP/Signup.jsp?signup-msg=Passwords+do+not+match");
+            return;
+        }
 
         ServletContext context = req.getServletContext();
         BasicDataSource dataSource = (BasicDataSource) context.getAttribute("dbcpDataSource");
@@ -48,14 +55,30 @@ public class SignupServlet extends HttpServlet {
             user.setDepartment(department);
             user.setJobRole(jobRole);
 
+            if (userDAO.isUsernameTaken(username)) {
+                resp.sendRedirect(req.getContextPath() + "web/JSP/Signup.jsp?signup-msg=Username+already+taken");
+                return;
+            }
+
             if (userDAO.saveUser(user)) {
-                resp.sendRedirect("web/JSP/login.jsp?signup-msg=Account+created");
+                resp.sendRedirect(req.getContextPath() + "web/JSP/login.jsp?signup-msg=Account+created");
             } else {
-                resp.sendRedirect("web/JSP/Signup.jsp?signup-msg=Could+not+create+user");
+                resp.sendRedirect(req.getContextPath() + "web/JSP/Signup.jsp?signup-msg=Could+not+create+user");
             }
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("JSP/Signup.jsp?signup-msg=Server+error");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ServletContext context = getServletContext();
+        BasicDataSource dataSource = (BasicDataSource) context.getAttribute("dbcpDataSource");
+        UserDAO userDAO = new UserDAO(dataSource);
+        List<String> usernames = userDAO.getAllUsernames();
+
+        req.setAttribute("usernames", usernames);
+        req.getRequestDispatcher("web/JSP/Signup.jsp").forward(req, resp);
     }
 }
