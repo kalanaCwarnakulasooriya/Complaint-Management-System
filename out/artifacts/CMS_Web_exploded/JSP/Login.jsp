@@ -15,6 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/Login.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Login - CMS</title>
 </head>
 <body>
@@ -44,18 +45,17 @@
         </form>
     </div>
 
-
-    <!-- SweetAlert Error Display -->
     <%
-        String error = (String) request.getAttribute("error");
-        if (error != null) {
+        String signupMsg = request.getParameter("signup-msg");
+        if (signupMsg != null && !signupMsg.isEmpty()) {
     %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: '<%= error %>',
-            confirmButtonColor: '#d33'
+            icon: 'success',
+            title: 'Success!',
+            text: '<%= signupMsg.replace("+", " ") %>',
+            confirmButtonColor: '#3085d6'
         });
     </script>
     <%

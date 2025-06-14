@@ -20,6 +20,8 @@
           <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:3.0.0" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.38" />
           <element id="library" level="project" name="Maven: org.mindrot:jbcrypt:0.4" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.13.1" />
+          <element id="library" level="project" name="Maven: com.google.errorprone:error_prone_annotations:2.38.0" />
         </element>
       </element>
     </root>

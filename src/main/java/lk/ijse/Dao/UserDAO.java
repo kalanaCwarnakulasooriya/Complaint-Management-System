@@ -70,4 +70,24 @@ public class UserDAO {
         }
         return null;
     }
+
+    public boolean isUsernameTaken(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement pstm = connection.prepareStatement(sql)) {
+
+            pstm.setString(1, username);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
