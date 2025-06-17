@@ -4,7 +4,7 @@
 <head>
   <title>Complaint Management System</title>
   <script>
-    window.location.href = "register.jsp";
+    window.location.href = "login.jsp";
   </script>
 </head>
 <body>
