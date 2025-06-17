@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: Kalana Warnakulasooriya
-  Date: 6/17/2025
+  Date: 6/15/2025
   Time: 4:06 PM
   To change this template use File | Settings | File Templates.
 --%>
@@ -94,8 +94,8 @@
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1 d-flex align-items-center">
 <%--      <i class="fas fa-clipboard-list me-2"></i>Complaint Management System--%>
-      <span class="badge bg-dark d-flex align-items-center ms-3">
-        <i class="fas fa-user-shield me-1"></i>Employee Panel - CMS
+      <span class="badge bg-light text-dark d-flex align-items-center ms-3">
+        <i class="fas fa-user-shield me-1"></i>Employee Panel - C M S
       </span>
     </span>
 

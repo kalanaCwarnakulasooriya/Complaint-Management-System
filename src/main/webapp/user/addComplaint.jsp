@@ -1,0 +1,239 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Kalana Warnakulasooriya
+  Date: 6/15/2025
+  Time: 9:43 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page import="lk.ijse.cms.model.Complain" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submission Form</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+        }
+
+        .navbar-custom {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand .badge {
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+
+        .btn-back {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background-color: #ffffff;
+            color: #2c3e50;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-back:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-1px);
+        }
+
+        .form-container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            max-width: 800px;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .form-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-footer {
+            background-color: #f8f9fa;
+            padding: 1rem 2rem;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border: none;
+        }
+
+        .required {
+            color: var(--danger-color);
+        }
+
+        @media (max-width: 768px) {
+            .form-header h1 { font-size: 1.5rem; }
+            .form-footer { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<%
+    Complain complaint = null;
+    String pageTitle = "Submit a Complaint";
+    String submitButtonText = "Submit Complaint";
+    String message = (String) request.getAttribute("message");
+    try {
+        complaint = (Complain) request.getAttribute("complain");
+        if (complaint != null && complaint.getId() > 0) {
+            pageTitle = "Edit Complaint";
+            submitButtonText = "Update Complaint";
+        }
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
+    }
+%>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="dashboard">
+<%--            <i class="bi bi-clipboard-check me-2"></i>Complaint Management System--%>
+            <span class="badge bg-light text-dark d-flex align-items-center ms-3">
+        <i class="bi bi-person-badge-fill me-1"></i>Complaint Form - C M S
+      </span>
+        </a>
+        <div class="ms-auto">
+            <a href="dashboard" class="btn btn-back">
+                <i class="bi bi-arrow-left-circle me-1"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Form Container -->
+<div class="container py-4">
+    <div class="form-container">
+
+        <!-- Form Header -->
+        <div class="form-header">
+            <h1><%= pageTitle %></h1>
+            <p>Please fill in the required information to submit your complaint</p>
+        </div>
+
+        <!-- Alert Message -->
+        <% if (message != null) { %>
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <i class="fas fa-check-circle me-2"></i><%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <% } %>
+
+        <!-- Form Body -->
+        <form action="addComplaint" method="post" id="complaintForm">
+            <div class="form-body">
+                <input type="hidden" name="complainID" value="<%= (complaint != null) ? complaint.getId() : "" %>">
+
+                <div class="mb-3">
+                    <label for="subject" class="form-label"><b>Subject</b> <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="subject" name="subject"
+                           placeholder="Enter subject"
+                           value="<%= (complaint != null) ? complaint.getTitle() : "" %>">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label"><b>Description</b> <span class="required">*</span></label>
+                    <textarea class="form-control" id="description" name="description" rows="5"
+                              placeholder="Describe your issue..."
+                              maxlength="1000"><%= (complaint != null) ? complaint.getDescription() : "" %></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="incidentDate" class="form-label"><b>Incident Date</b></label>
+                    <input type="date" class="form-control" id="incidentDate" name="incidentDate"
+                           value="<%= (complaint != null && complaint.getCreated_at() != null) ? complaint.getCreated_at() : "" %>">
+                </div>
+
+                <% if (complaint != null && complaint.getRemarks() != null) { %>
+                <div class="mb-3">
+                    <label for="remark" class="form-label">Admin Remark</label>
+                    <textarea class="form-control" id="remark" name="remark" rows="3"
+                              disabled><%= complaint.getRemarks() %></textarea>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- Form Footer -->
+            <div class="form-footer">
+                <small class="text-muted">
+                    Fields marked with <span class="required">*</span> are mandatory
+                </small>
+                <div>
+                    <a href="dashboard" class="btn btn-secondary me-2">
+                        <i class="bi bi-x-circle me-1"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i><%= submitButtonText %>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
