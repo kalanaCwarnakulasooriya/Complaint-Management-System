@@ -13,6 +13,7 @@ CREATE TABLE complaints (
                             user_id INT NOT NULL,
                             title VARCHAR(255) NOT NULL,
                             description TEXT NOT NULL,
+                            remarks VARCHAR(255),
                             status ENUM('Pending', 'In Progress', 'Resolved') DEFAULT 'Pending',
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

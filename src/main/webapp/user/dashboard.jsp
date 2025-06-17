@@ -1,10 +1,14 @@
-<%--
+<%@ page import="lk.ijse.cms.model.Complain" %>
+<%@ page import="java.util.List" %>
+<%@ page import="lk.ijse.cms.model.StatusCount" %><%--
   Created by IntelliJ IDEA.
   User: Kalana Warnakulasooriya
   Date: 6/15/2025
   Time: 4:06 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="lk.ijse.cms.model.Complain" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +92,12 @@
   </style>
 </head>
 <body>
-
+<%
+  List<Complain> complaints = (List<Complain>) request.getAttribute("complaintList");
+  String message = (String) request.getAttribute("message");
+  StatusCount statusCount = (StatusCount) request.getAttribute("statusCount");
+  int id = 0;
+%>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
   <div class="container-fluid">
@@ -112,7 +121,7 @@
                  placeholder="Search complaints" onkeyup="filterComplaints()">
         </div>
       </form>
-      <a href="addComplaint.jsp" class="btn btn-light btn-sm me-2">
+      <a href="addComplaint" class="btn btn-light btn-sm me-2">
         <i class="fas fa-plus me-1"></i>Add
       </a>
       <a href="logout" class="btn btn-light btn-sm">
@@ -126,13 +135,21 @@
 <div class="container py-5">
   <h2 class="mb-4 fw-semibold">Dashboard Overview</h2>
 
+  <!-- Success Message -->
+  <% if (message != null) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle me-2"></i><%= message %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <% } %>
+
   <!-- Stats Cards -->
   <div class="row g-4 mb-4">
     <div class="col-md-3 col-sm-6">
       <div class="card text-center text-warning border-warning-custom">
         <div class="card-body">
           <i class="fas fa-clock fa-2x mb-2"></i>
-          <h4 class="fw-bold">--</h4>
+          <h4 class="fw-bold"><%= statusCount.getPENDING() %></h4>
           <p class="text-muted">Pending</p>
         </div>
       </div>
@@ -141,7 +158,7 @@
       <div class="card text-center text-info border-info-custom">
         <div class="card-body">
           <i class="fas fa-spinner fa-2x mb-2"></i>
-          <h4 class="fw-bold">--</h4>
+          <h4 class="fw-bold"><%= statusCount.getIN_PROGRESS() %></h4>
           <p class="text-muted">In Progress</p>
         </div>
       </div>
@@ -150,7 +167,7 @@
       <div class="card text-center text-success border-success-custom">
         <div class="card-body">
           <i class="fas fa-check-circle fa-2x mb-2"></i>
-          <h4 class="fw-bold">--</h4>
+          <h4 class="fw-bold"><%= statusCount.getRESOLVED() %></h4>
           <p class="text-muted">Resolved</p>
         </div>
       </div>
@@ -159,7 +176,7 @@
       <div class="card text-center text-primary border-primary-custom">
         <div class="card-body">
           <i class="fas fa-list fa-2x mb-2"></i>
-          <h4 class="fw-bold">--</h4>
+          <h4 class="fw-bold"><%= statusCount.getTotalCount() %></h4>
           <p class="text-muted">Total</p>
         </div>
       </div>
@@ -185,7 +202,38 @@
           </tr>
           </thead>
           <tbody id="complaintsTableBody">
-          <!-- Complaints will be dynamically loaded here via JSP -->
+          <% if (complaints != null && !complaints.isEmpty()) {
+            for (Complain c : complaints) { %>
+          <tr>
+            <% id++; %>
+            <td><%= id %></td>
+            <td><%= c.getTitle() %></td>
+            <td><%= c.getDescription() %></td>
+            <td>
+              <% String status = c.getStatus().toLowerCase();
+                String badgeClass = "secondary";
+                if (status.equals("pending")) badgeClass = "warning";
+                else if (status.equals("in-progress")) badgeClass = "info";
+                else if (status.equals("resolved")) badgeClass = "success"; %>
+              <span class="badge bg-<%= badgeClass %>"><%= c.getStatus() %></span>
+            </td>
+            <td><%= c.getCreated_at() %></td>
+            <td>
+              <a href="addComplaint?complainID=<%= c.getId() %>"
+                 class="btn btn-primary btn-sm me-1">
+                <i class="fas fa-edit"></i> Edit
+              </a>
+            </td>
+          </tr>
+          <% }
+          } else { %>
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              <i class="fas fa-inbox fa-2x mb-2"></i>
+              <br>No complaints found.
+            </td>
+          </tr>
+          <% } %>
           </tbody>
         </table>
       </div>
@@ -197,18 +245,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
   function filterComplaints() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const rows = document.getElementById('complaintsTableBody').getElementsByTagName('tr');
-    for (let row of rows) {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const tableBody = document.getElementById('complaintsTableBody');
+    const rows = tableBody.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
       const cells = row.getElementsByTagName('td');
-      let match = false;
-      for (let i = 0; i < cells.length - 1; i++) {
-        if (cells[i].textContent.toLowerCase().includes(input)) {
-          match = true;
+      let found = false;
+
+      for (let j = 0; j < cells.length - 1; j++) {
+        if (cells[j].textContent.toLowerCase().includes(searchInput)) {
+          found = true;
           break;
         }
       }
-      row.style.display = match ? '' : 'none';
+      row.style.display = found ? '' : 'none';
     }
   }
 </script>
