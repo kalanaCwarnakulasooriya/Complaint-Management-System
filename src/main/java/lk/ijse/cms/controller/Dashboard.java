@@ -28,7 +28,8 @@ public class Dashboard extends HttpServlet {
         int totalCount = complaintList.size();
 
         for (Complain complain : complaintList) {
-            switch (complain.getStatus()) {
+            String status = complain.getStatus().toUpperCase().replace(" ", "_");
+            switch (status) {
                 case "PENDING": pendingCount++; break;
                 case "RESOLVED": resolvedCount++; break;
                 case "IN_PROGRESS": inProgressCount++; break;
