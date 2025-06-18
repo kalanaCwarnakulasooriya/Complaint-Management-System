@@ -57,6 +57,9 @@ public class Dashboard extends HttpServlet {
             if (complainID != null && !complainID.isEmpty() && role.equals("ADMIN")) {
                 deleteComplaint(complainID, context);
                 req.setAttribute("message", "Complaint ID " + complainID + " deleted successfully.");
+            } else if (complainID != null && !complainID.isEmpty() && role.equals("EMPLOYEE")) {
+                deleteComplaint(complainID, context);
+                req.setAttribute("message", "Complaint ID " + complainID + " deleted successfully.");
             }
 
             Connection connection = dataSource.getConnection();

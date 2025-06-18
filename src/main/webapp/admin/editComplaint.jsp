@@ -320,8 +320,8 @@
                         </label>
                         <textarea class="form-control" id="remark" name="remark" rows="3"
                                   placeholder="Add remarks or notes"
-                                  maxlength="500"><%= (complaint != null && complaint.getRemarks() != null) ? complaint.getRemarks() : "" %></textarea>
-
+                                  maxlength="500"><%= (complaint != null && complaint.getRemarks() != null) ? complaint.getRemarks() : "" %>
+                        </textarea>
                     </div>
                 </div>
             </div>
@@ -349,6 +349,5 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
