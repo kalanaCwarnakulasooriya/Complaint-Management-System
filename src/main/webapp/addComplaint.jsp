@@ -24,8 +24,11 @@
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
             --danger-color: #e74c3c;
             --light-bg: #f8f9fa;
+            --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
 
         body {
@@ -69,7 +72,7 @@
         .form-container {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            box-shadow: var(--card-shadow);
             max-width: 800px;
             margin: 2rem auto;
             overflow: hidden;
@@ -98,8 +101,20 @@
         }
 
         .form-control, .form-select {
+            border: 2px solid #e9ecef;
             border-radius: 8px;
             padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: var(--secondary-color);
         }
 
         .form-footer {
@@ -185,23 +200,27 @@
         <form action="addComplaint" method="post" id="complaintForm">
             <div class="form-body">
                 <input type="hidden" name="complainID" value="<%= (complaint != null) ? complaint.getId() : "" %>">
-
+<%--                <h5><i class="bi bi-info-circle form-icon"></i><b>Basic Information</b></h5>--%>
                 <div class="mb-3">
-                    <label for="subject" class="form-label"><b>Subject</b> <span class="required">*</span></label>
+                    <label for="subject" class="form-label">
+                        <i class="bi bi-card-text me-1"></i><b>Subject</b> <span class="required">*</span></label>
                     <input type="text" class="form-control" id="subject" name="subject"
                            placeholder="Enter subject"
                            value="<%= (complaint != null) ? complaint.getTitle() : "" %>">
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label"><b>Description</b> <span class="required">*</span></label>
+                    <label for="description" class="form-label">
+                        <i class="bi bi-file-text me-1"></i><b>Description</b> <span class="required">*</span></label>
                     <textarea class="form-control" id="description" name="description" rows="5"
                               placeholder="Describe your issue..."
                               maxlength="1000"><%= (complaint != null) ? complaint.getDescription() : "" %></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="incidentDate" class="form-label"><b>Incident Date</b></label>
+                    <label for="incidentDate" class="form-label">
+                        <i class="bi bi-calendar-event me-1"></i><b>Incident Date</b>
+                    </label>
                     <input type="date" class="form-control" id="incidentDate" name="incidentDate"
                            value="<%= (complaint != null && complaint.getCreated_at() != null) ? complaint.getCreated_at() : "" %>">
                 </div>
@@ -218,6 +237,7 @@
             <!-- Form Footer -->
             <div class="form-footer">
                 <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
                     Fields marked with <span class="required">*</span> are mandatory
                 </small>
                 <div>

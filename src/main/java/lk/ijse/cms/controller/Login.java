@@ -20,41 +20,30 @@ public class Login extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
         if (username == null || username.isEmpty()) {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
         }
 
         try {
             String sql = "SELECT * FROM users WHERE username = ?";
             User user = UserDAO.findUserByUsername(getServletContext(), sql, username);
-            user.show();
-            if (user == null) {
+
+            if (user == null || !UserEncryption.decrypt(password, user.getPassword())) {
+                // Invalid login
                 req.setAttribute("errorMessage", "Invalid username or password.");
-                resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                req.getRequestDispatcher("login.jsp").forward(req, resp);
                 return;
             }
 
-            if(UserEncryption.decrypt(password, user.getPassword())){
-                HttpSession session = req.getSession();
-                session.setAttribute("user", user.getId());
-                session.setAttribute("role", user.getRole());
-                if ("ADMIN".equals(user.getRole())) {
-                    resp.sendRedirect(req.getContextPath() + "/dashboard");
-                } else if ("EMPLOYEE".equals(user.getRole())) {
-                    resp.sendRedirect(req.getContextPath() + "/dashboard");
-                } else {
-                    resp.getWriter().println("Invalid role.");
-                }
-                return;
-            }else {
-                resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            }
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Valid login
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user.getId());
+            session.setAttribute("role", user.getRole());
+
+            // Redirect by role
+            resp.sendRedirect(req.getContextPath() + "/dashboard");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

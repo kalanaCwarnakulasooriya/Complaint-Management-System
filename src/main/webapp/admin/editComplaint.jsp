@@ -17,6 +17,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         :root {
@@ -30,46 +32,63 @@
         }
 
         body {
+            font-family: 'Poppins', sans-serif;
             background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
         }
 
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .navbar-custom {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand .badge {
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+
+        .btn-back {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background-color: #ffffff;
+            color: #2c3e50;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-back:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-1px);
         }
 
         .form-container {
-            background: white;
+            background: #fff;
             border-radius: 12px;
             box-shadow: var(--card-shadow);
-            overflow: hidden;
+            max-width: 800px;
             margin: 2rem auto;
-            max-width: 900px;
+            overflow: hidden;
         }
 
         .form-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: #fff;
             padding: 2rem;
             text-align: center;
         }
 
         .form-header h1 {
-            margin: 0;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
-        }
-
-        .form-header p {
-            margin: 0.5rem 0 0 0;
-            opacity: 0.9;
+            margin: 0;
         }
 
         .form-body {
@@ -77,9 +96,8 @@
         }
 
         .form-label {
-            font-weight: 600;
+            font-weight: 500;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
         }
 
         .form-control, .form-select {
@@ -99,126 +117,29 @@
             border-color: var(--secondary-color);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border: none;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        .priority-badge, .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-left: 0.5rem;
-        }
-
-        .priority-low { background-color: #d4edda; color: #155724; }
-        .priority-medium { background-color: #fff3cd; color: #856404; }
-        .priority-high { background-color: #f8d7da; color: #721c24; }
-        .priority-urgent { background-color: #f5c6cb; color: #721c24; }
-
-        .status-pending { background-color: #fff3cd; color: #856404; }
-        .status-in_progress { background-color: #cce5ff; color: #004085; }
-        .status-resolved { background-color: #d4edda; color: #155724; }
-
-        .form-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
+        .form-footer {
             background-color: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 2rem;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .form-section h5 {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border: none;
         }
 
         .required {
             color: var(--danger-color);
         }
 
-        .form-footer {
-            background-color: #f8f9fa;
-            padding: 1.5rem 2rem;
-            border-top: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .character-count {
-            font-size: 0.875rem;
-            color: #6c757d;
-            text-align: right;
-            margin-top: 0.25rem;
-        }
-
-        .form-icon {
-            color: var(--secondary-color);
-            margin-right: 0.5rem;
-        }
-
-        .info-text {
-            font-size: 0.875rem;
-            color: #6c757d;
-            margin-top: 0.25rem;
-        }
-
         @media (max-width: 768px) {
-            .form-container {
-                margin: 1rem;
-                border-radius: 8px;
-            }
-
-            .form-header {
-                padding: 1.5rem;
-            }
-
-            .form-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .form-body {
-                padding: 1.5rem;
-            }
-
-            .form-footer {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
+            .form-header h1 { font-size: 1.5rem; }
+            .form-footer { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; }
         }
     </style>
 </head>
@@ -240,15 +161,17 @@
 %>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container-fluid">
         <a class="navbar-brand" href="dashboard">
-            <i class="bi bi-clipboard-check me-2"></i>
-            Complaint Management System
+            <%--            <i class="bi bi-clipboard-check me-2"></i>Complaint Management System--%>
+            <span class="badge bg-light text-dark d-flex align-items-center ms-3">
+        <i class="bi bi-person-badge-fill me-1"></i>Complaint Form - C M S
+      </span>
         </a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link btn btn-outline-light btn-sm" href="dashboard">
-                <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+        <div class="ms-auto">
+            <a href="dashboard" class="btn btn-back">
+                <i class="bi bi-arrow-left-circle me-1"></i>Back to Dashboard
             </a>
         </div>
     </div>
@@ -259,7 +182,7 @@
     <div class="form-container">
         <!-- Form Header -->
         <div class="form-header">
-            <i class="bi bi-clipboard-plus display-4 mb-3"></i>
+<%--            <i class="bi bi-clipboard-plus display-4 mb-3"></i>--%>
             <h1><%= pageTitle %></h1>
             <p>Please fill out all required fields to submit your complaint</p>
         </div>
@@ -273,7 +196,7 @@
 
                 <!-- Basic Information Section -->
                 <div class="form-section">
-                    <h5><i class="bi bi-info-circle form-icon"></i>Basic Information</h5>
+<%--                    <h5><i class="bi bi-info-circle form-icon"></i>Basic Information</h5>--%>
                     <div class="row">
                         <div class="col-md-8 mb-3">
                             <label for="subject" class="form-label">
@@ -306,6 +229,7 @@
                             <i class="bi bi-check-circle me-1"></i>Status <span class="required">*</span>
                         </label>
                         <select class="form-select" id="status" name="status" required>
+                            <option value="">Select Status</option>
                             <option value="pending" <%= (complaint != null && "PENDING".equals(complaint.getStatus())) ? "selected" : "" %>>Pending</option>
                             <option value="in_progress" <%= (complaint != null && "IN_PROGRESS".equals(complaint.getStatus())) ? "selected" : "" %>>In Progress</option>
                             <option value="resolved" <%= (complaint != null && "RESOLVED".equals(complaint.getStatus())) ? "selected" : "" %>>Resolved</option>
@@ -336,7 +260,7 @@
                 </div>
                 <div>
                     <a href="dashboard" class="btn btn-secondary me-2">
-                        <i class="bi bi-arrow-left me-1"></i>Cancel
+                        <i class="bi bi-x-circle me-1"></i>Cancel
                     </a>
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg me-1"></i><%= submitButtonText %>

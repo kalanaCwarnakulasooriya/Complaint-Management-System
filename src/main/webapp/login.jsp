@@ -151,6 +151,17 @@
             z-index: 5;
         }
 
+        .form-control.with-icon {
+            padding-left: 2.5rem; /* enough space for icon */
+            position: relative;
+            z-index: 1;
+        }
+
+        label.with-icon {
+            padding-left: 2.5rem; /* aligns label with input text */
+        }
+
+
         label.with-icon {
             padding-left: 35px;
         }
