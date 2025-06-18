@@ -54,7 +54,6 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        //TODO: useslata wena wenama data load wenna hadanna methanin role eka anuwa
         Cookie[] cookies = req.getCookies();
         ServletContext context = getServletContext();
         BasicDataSource dataSource = (BasicDataSource) context.getAttribute("ds");
@@ -64,8 +63,6 @@ public class Dashboard extends HttpServlet {
             deleteComplaint(complainID);
             req.setAttribute("message", complainID + " Complaint Deleted Successfully");
         }
-        //DecodedJWT decodedJWT = JWTUtil.decodeToken(cookies);
-        //System.out.println("Decoded JWT: " + decodedJWT);
         HttpSession session = req.getSession();
         String role = (String) session.getAttribute("role");
         String userID = (String) session.getAttribute("user");

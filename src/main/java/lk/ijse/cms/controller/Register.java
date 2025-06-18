@@ -19,14 +19,17 @@ public class Register extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String password2 = req.getParameter("password2");
+        String role = req.getParameter("role"); // ✅ Get selected role from form
 
         if (username == null || username.isEmpty()) {
-            resp.getWriter().println("Username is required.");
+            req.setAttribute("errorMessage", "Username is required.");
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
-        if (!password.equals(password2)){
-            resp.getWriter().println("Passwords do not match.");
+        if (!password.equals(password2)) {
+            req.setAttribute("errorMessage", "Passwords do not match.");
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
@@ -35,20 +38,20 @@ public class Register extends HttpServlet {
 
         try {
             String encryptedPassword = UserEncryption.encrypt(password);
-            String sql = "INSERT INTO users (username, password,role) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
 
-            if (UserDAO.addUser(getServletContext(), sql, username, encryptedPassword, "EMPLOYEE")) {
-                // Registration successful
-                resp.setContentType("text/html");
-                resp.setStatus(HttpServletResponse.SC_OK);
-//                resp.getWriter().println("User registered successfully.");
-                resp.sendRedirect(req.getContextPath() + "/login.jsp");getServletContext();
+            if (UserDAO.addUser(getServletContext(), sql, username, encryptedPassword, role)) {
+                // ✅ Pass selected role to DB insert
+                req.setAttribute("successMessage", "User registered successfully.");
+                resp.sendRedirect(req.getContextPath() + "/login.jsp");
             } else {
-                resp.getWriter().println("Failed to register user.");
+                req.setAttribute("errorMessage", "Failed to register user.");
+                req.getRequestDispatcher("register.jsp").forward(req, resp);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            req.setAttribute("errorMessage", "An error occurred: " + e.getMessage());
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
         }
-
     }
 }

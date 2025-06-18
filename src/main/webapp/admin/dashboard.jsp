@@ -148,7 +148,7 @@
             <div class="card text-center text-warning border-warning-custom">
                 <div class="card-body">
                     <i class="fas fa-clock fa-2x mb-2"></i>
-<%--                    <h4 class="fw-bold"><%= statusCount.getPENDING() %></h4>--%>
+                    <h4 class="fw-bold"><%= statusCount.getPENDING() %></h4>
                     <p class="text-muted">Pending</p>
                 </div>
             </div>
@@ -157,7 +157,7 @@
             <div class="card text-center text-info border-info-custom">
                 <div class="card-body">
                     <i class="fas fa-spinner fa-2x mb-2"></i>
-<%--                    <h4 class="fw-bold"><%= statusCount.getIN_PROGRESS() %></h4>--%>
+                    <h4 class="fw-bold"><%= statusCount.getIN_PROGRESS() %></h4>
                     <p class="text-muted">In Progress</p>
                 </div>
             </div>
@@ -166,7 +166,7 @@
             <div class="card text-center text-success border-success-custom">
                 <div class="card-body">
                     <i class="fas fa-check-circle fa-2x mb-2"></i>
-<%--                    <h4 class="fw-bold"><%= statusCount.getRESOLVED() %></h4>--%>
+                    <h4 class="fw-bold"><%= statusCount.getRESOLVED() %></h4>
                     <p class="text-muted">Resolved</p>
                 </div>
             </div>
@@ -175,7 +175,7 @@
             <div class="card text-center text-primary border-primary-custom">
                 <div class="card-body">
                     <i class="fas fa-list fa-2x mb-2"></i>
-<%--                    <h4 class="fw-bold"><%= statusCount.getTotalCount() %></h4>--%>
+                    <h4 class="fw-bold"><%= statusCount.getTotalCount() %></h4>
                     <p class="text-muted">Total</p>
                 </div>
             </div>

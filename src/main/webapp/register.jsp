@@ -346,6 +346,17 @@
                 <label for="password2" class="with-icon">Confirm Password</label>
             </div>
 
+            <!-- ✅ Role combo box -->
+            <div class="form-floating position-relative">
+                <i class="bi bi-person-badge input-icon"></i>
+                <select class="form-select with-icon" id="role" name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="EMPLOYEE">Employee</option>
+                </select>
+                <label for="role" class="with-icon">Role</label>
+            </div>
+
             <button type="submit" class="btn btn-register">
 <%--                <i class="bi bi-person-plus me-2"></i>--%>
                 Create Account

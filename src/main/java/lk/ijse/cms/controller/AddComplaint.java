@@ -99,13 +99,22 @@ public class AddComplaint extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String complainID = req.getParameter("complainID");
-        System.out.println("Complain ID: " + complainID);
         Cookie[] cookies = req.getCookies();
         DecodedJWT decodedJWT = JWTUtil.decodeToken(cookies);
 
+        if (decodedJWT == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You must be logged in to access this page.");
+            return;
+        }
+
         if (complainID == null || complainID.isEmpty()) {
             System.out.println("No Complain ID provided, forwarding to addComplaint.jsp");
-            req.getRequestDispatcher("addComplaint.jsp").forward(req, resp);
+            if(decodedJWT.getClaim("role").asString().equals("ADMIN")) {
+                req.getRequestDispatcher("/admin/addComplaint.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("/user/addComplaint.jsp").forward(req, resp);
+            }
+            return;
         }
 
         ServletContext context = getServletContext();
@@ -116,12 +125,17 @@ public class AddComplaint extends HttpServlet {
                 resp.getWriter().println("Complaint not found.");
                 return;
             }
-            if (!decodedJWT.getSubject().equals(complain.getUser_id()) && !decodedJWT.getClaim("role").asString().equals("ADMIN")) {
-                resp.getWriter().println("You are not authorized to view this complaint.");
+
+            String jwtUserId = decodedJWT.getSubject();
+            String jwtRole = decodedJWT.getClaim("role").asString();
+
+            if (!jwtUserId.equals(complain.getUser_id()) && !"ADMIN".equals(jwtRole)) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You are not authorized to view this complaint.");
                 return;
             }
+
             req.setAttribute("complain", complain);
-            if(decodedJWT.getClaim("role").asString().equals("ADMIN")) {
+            if ("ADMIN".equals(jwtRole)) {
                 req.getRequestDispatcher("/admin/editComplaint.jsp").forward(req, resp);
             } else {
                 req.getRequestDispatcher("/user/addComplaint.jsp").forward(req, resp);
