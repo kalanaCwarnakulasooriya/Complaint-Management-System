@@ -121,7 +121,7 @@
                  placeholder="Search complaints" onkeyup="filterComplaints()">
         </div>
       </form>
-      <a href="addComplaint" class="btn btn-light btn-sm me-2">
+      <a href="addComplaint.jsp" class="btn btn-light btn-sm me-2">
         <i class="fas fa-plus me-1"></i>Add
       </a>
       <a href="logout" class="btn btn-light btn-sm">
@@ -219,9 +219,13 @@
             </td>
             <td><%= c.getCreated_at() %></td>
             <td>
-              <a href="addComplaint?complainID=<%= c.getId() %>"
+              <a href="addComplaint.jsp?complainID=<%= c.getId() %>"
                  class="btn btn-primary btn-sm me-1">
                 <i class="fas fa-edit"></i> Edit
+              </a>
+              <a href="dashboard?complainID=<%= c.getId() %>&delete=true"
+                 class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Delete
               </a>
             </td>
           </tr>
