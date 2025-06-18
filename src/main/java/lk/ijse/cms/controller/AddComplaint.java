@@ -27,11 +27,10 @@ public class AddComplaint extends HttpServlet {
 
         String userId = (String) session.getAttribute("user");
         String role = (String) session.getAttribute("role");
-
         String subject = req.getParameter("subject");
         String description = req.getParameter("description");
         String remark = req.getParameter("remark");
-        String status = req.getParameter("status") == null ? "PENDING" : req.getParameter("status");
+        String status = req.getParameter("status") == null ? "PENDING" : req.getParameter("status").trim();
         String incidentDate = req.getParameter("incidentDate");
         String complainID = req.getParameter("complainID");
 
@@ -46,6 +45,7 @@ public class AddComplaint extends HttpServlet {
                     rowsAffected = ComplainDAO.updateAddDeleteComplaint(context,
                             "UPDATE complaints SET status=?, remarks=? WHERE id=?",
                             status, remark, Integer.parseInt(complainID));
+                    System.out.println("Status value: " + status);
                 }
             } else {
                 rowsAffected = ComplainDAO.updateAddDeleteComplaint(context,

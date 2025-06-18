@@ -223,10 +223,9 @@
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                             <a href="dashboard?complainID=<%= c.getId() %>&delete=true"
-                               class="btn btn-danger btn-sm">
+                               class="btn btn-danger btn-sm" onclick="confirmDelete(${complain.id})">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
-
                         </td>
                     </tr>
                     <% }
@@ -265,6 +264,12 @@
                 }
             }
             row.style.display = found ? '' : 'none';
+        }
+    }
+
+    function confirmDelete(complainId) {
+        if (confirm("Are you sure you want to delete complaint ID " + complainId + "?")) {
+            window.location.href = 'dashboard?complainID=' + complainId;
         }
     }
 </script>
