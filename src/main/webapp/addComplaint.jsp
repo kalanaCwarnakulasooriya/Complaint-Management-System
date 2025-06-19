@@ -79,7 +79,8 @@
         }
 
         .form-header {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, #141e30, #243b55);
+            /*background: linear-gradient(to right, var(--primary-color), var(--secondary-color));*/
             color: #fff;
             padding: 2rem;
             text-align: center;

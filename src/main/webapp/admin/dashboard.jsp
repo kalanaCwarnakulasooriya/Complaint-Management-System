@@ -222,8 +222,8 @@
                                class="btn btn-primary btn-sm me-1">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a href="dashboard?complainID=<%= c.getId() %>&delete=true"
-                               class="btn btn-danger btn-sm" onclick="confirmDelete(${complain.id})">
+                            <a href="javascript:void(0);" onclick="confirmDelete(<%= c.getId() %>)"
+                               class="btn btn-danger btn-sm">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
                         </td>
@@ -268,10 +268,22 @@
     }
 
     function confirmDelete(complainId) {
-        if (confirm("Are you sure you want to delete complaint ID " + complainId + "?")) {
-            window.location.href = 'dashboard?complainID=' + complainId;
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This complaint will be permanently deleted. This action cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "dashboard?complainID=" + complainId + "&delete=true";
+            }
+        });
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

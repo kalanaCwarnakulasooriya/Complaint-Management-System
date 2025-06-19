@@ -29,7 +29,8 @@
         }
 
         body {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, #141e30, #243b55);
+            /*background: linear-gradient(to right, var(--primary-color), var(--secondary-color));*/
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -52,7 +53,8 @@
         }
 
         .register-left {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, #434343, #000000);
+            /*background: linear-gradient(to right, var(--primary-color), var(--secondary-color));*/
             color: white;
             padding: 3rem;
             display: flex;
