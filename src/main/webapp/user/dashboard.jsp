@@ -1,6 +1,4 @@
-<%@ page import="lk.ijse.cms.model.Complain" %>
-<%@ page import="java.util.List" %>
-<%@ page import="lk.ijse.cms.model.StatusCount" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Kalana Warnakulasooriya
   Date: 6/15/2025
@@ -9,6 +7,7 @@
 --%>
 <%@ page import="lk.ijse.cms.model.Complain" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lk.ijse.cms.model.StatusCount" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">

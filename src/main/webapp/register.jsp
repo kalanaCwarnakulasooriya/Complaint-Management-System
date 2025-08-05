@@ -362,9 +362,9 @@
             <div class="form-floating position-relative">
                 <i class="bi bi-person-badge input-icon"></i>
                 <select class="form-select with-icon" id="role" name="role" required>
-                    <option value="" disabled selected>Select Role</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="EMPLOYEE">Employee</option>
+                    <option value="" disabled selected>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select Role</option>
+                    <option value="ADMIN">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Admin</option>
+                    <option value="EMPLOYEE">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee</option>
                 </select>
                 <label for="role" class="with-icon">Role</label>
             </div>

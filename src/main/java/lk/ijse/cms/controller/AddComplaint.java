@@ -39,8 +39,8 @@ public class AddComplaint extends HttpServlet {
             if (complainID != null && !complainID.isEmpty()) {
                 if (role.equals("EMPLOYEE")) {
                     rowsAffected = ComplainDAO.updateAddDeleteComplaint(context,
-                            "UPDATE complaints SET title=?, description=?, created_at=?, status=? WHERE id=?",
-                            subject, description, incidentDate, status, Integer.parseInt(complainID));
+                            "UPDATE complaints SET title=?, description=?, created_at=? WHERE id=?",
+                            subject, description, incidentDate, Integer.parseInt(complainID));
                 } else {
                     rowsAffected = ComplainDAO.updateAddDeleteComplaint(context,
                             "UPDATE complaints SET status=?, remarks=? WHERE id=?",
